@@ -6,6 +6,7 @@
   <style>
     body {
       height: 100vh;
+      margin: 0;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -20,12 +21,14 @@
       color: #fff;
       font-size: 3rem;
       text-shadow: 2px 2px 5px rgba(0,0,0,0.2);
+      z-index: 2;
     }
 
     .buttons {
       position: relative;
-      width: 400px;
-      height: 200px;
+      width: 420px;
+      height: 220px;
+      z-index: 2;
     }
 
     button {
@@ -35,25 +38,61 @@
       border: none;
       border-radius: 10px;
       cursor: pointer;
-      transition: transform 0.2s ease;
+      transition:
+        transform 0.2s ease,
+        left 0.6s ease-out,
+        top 0.6s ease-out;
     }
 
     #yesBtn {
-      left: 50px;
+      left: 40px;
+      top: 80px;
       background-color: #4CAF50;
       color: white;
     }
 
     #noBtn {
-      right: 50px;
+      left: 260px;
+      top: 80px;
       background-color: #f44336;
       color: white;
+    }
+
+    /* Herz-Animation */
+    .heart {
+      position: fixed;
+      top: -20px;
+      font-size: 20px;
+      animation: fall linear forwards;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .sticker {
+  width: 240px;
+  margin-bottom: 40px;
+ 
+}
+
+@keyframes float {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-15px); }
+  100% { transform: translateY(0); }
+}
+
+
+    @keyframes fall {
+      to {
+        transform: translateY(110vh);
+        opacity: 0;
+      }
     }
   </style>
 </head>
 <body>
 
-  <h1>Em Trang, möchtest du mein Valentin sein? 💘</h1>
+<img src="moobub.gif" class="sticker">
+  <h1>em Trang, möchtest du mein Valentin sein? 💘</h1>
 
   <div class="buttons">
     <button id="yesBtn">Ja</button>
@@ -63,27 +102,50 @@
   <script>
     const noBtn = document.getElementById("noBtn");
     const yesBtn = document.getElementById("yesBtn");
+    const container = document.querySelector(".buttons");
 
     let scale = 1;
+    let speed = 600; // ms – wird kleiner = schneller
 
-    noBtn.addEventListener("mouseover", () => {
-      // zufällige neue Position
-      const x = Math.random() * 300;
-      const y = Math.random() * 150;
+    noBtn.addEventListener("mouseenter", () => {
+      const maxX = container.clientWidth - noBtn.offsetWidth;
+      const maxY = container.clientHeight - noBtn.offsetHeight;
 
-      noBtn.style.left = `${x}px`;
-      noBtn.style.top = `${y}px`;
+      const x = Math.random() * maxX;
+      const y = Math.random() * maxY;
+
+      // immer schneller fliehen
+      speed = Math.max(150, speed - 60);
+      noBtn.style.transitionDuration = speed + "ms";
+
+      noBtn.style.left = x + "px";
+      noBtn.style.top = y + "px";
 
       // Ja-Button wächst
-      scale += 0.15;
+      scale += 0.25;
       yesBtn.style.transform = `scale(${scale})`;
     });
 
     yesBtn.addEventListener("click", () => {
       window.location.href = "yes.html";
     });
+
+    // Herzregen
+    function createHeart() {
+      const heart = document.createElement("div");
+      heart.className = "heart";
+      heart.textContent = "💖";
+
+      heart.style.left = Math.random() * 100 + "vw";
+      heart.style.fontSize = (16 + Math.random() * 24) + "px";
+      heart.style.animationDuration = (3 + Math.random() * 3) + "s";
+
+      document.body.appendChild(heart);
+      setTimeout(() => heart.remove(), 6000);
+    }
+
+    setInterval(createHeart, 280);
   </script>
 
 </body>
 </html>
-
