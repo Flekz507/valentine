@@ -100,52 +100,59 @@
   </div>
 
   <script>
-    const noBtn = document.getElementById("noBtn");
-    const yesBtn = document.getElementById("yesBtn");
-    const container = document.querySelector(".buttons");
+  const noBtn = document.getElementById("noBtn");
+  const yesBtn = document.getElementById("yesBtn");
+  const container = document.querySelector(".buttons");
 
-    let scale = 1;
-    let speed = 600; // ms – wird kleiner = schneller
+  let scale = 1;
+  let speed = 600;
 
-    noBtn.addEventListener("mouseenter", () => {
-      const maxX = container.clientWidth - noBtn.offsetWidth;
-      const maxY = container.clientHeight - noBtn.offsetHeight;
+  function moveNoButton() {
+    const maxX = container.clientWidth - noBtn.offsetWidth;
+    const maxY = container.clientHeight - noBtn.offsetHeight;
 
-      const x = Math.random() * maxX;
-      const y = Math.random() * maxY;
+    const x = Math.random() * maxX;
+    const y = Math.random() * maxY;
 
-      // immer schneller fliehen
-      speed = Math.max(150, speed - 60);
-      noBtn.style.transitionDuration = speed + "ms";
+    speed = Math.max(150, speed - 60);
+    noBtn.style.transitionDuration = speed + "ms";
 
-      noBtn.style.left = x + "px";
-      noBtn.style.top = y + "px";
+    noBtn.style.left = x + "px";
+    noBtn.style.top = y + "px";
 
-      // Ja-Button wächst
-      scale += 0.25;
-      yesBtn.style.transform = `scale(${scale})`;
-    });
+    scale += 0.25;
+    yesBtn.style.transform = `scale(${scale})`;
+  }
 
-    yesBtn.addEventListener("click", () => {
-      window.location.href = "yes.html";
-    });
+  // Maus
+  noBtn.addEventListener("mouseenter", moveNoButton);
 
-    // Herzregen
-    function createHeart() {
-      const heart = document.createElement("div");
-      heart.className = "heart";
-      heart.textContent = "💖";
+  // Touch (Finger)
+  noBtn.addEventListener("touchstart", moveNoButton);
+  noBtn.addEventListener("touchmove", moveNoButton);
 
-      heart.style.left = Math.random() * 100 + "vw";
-      heart.style.fontSize = (16 + Math.random() * 24) + "px";
-      heart.style.animationDuration = (3 + Math.random() * 3) + "s";
+  yesBtn.addEventListener("click", () => {
+    window.location.href = "yes.html";
+  });
 
-      document.body.appendChild(heart);
-      setTimeout(() => heart.remove(), 6000);
-    }
+  // Herzregen
+  function createHeart() {
+    const heart = document.createElement("div");
+    heart.className = "heart";
+    heart.textContent = "💖";
 
-    setInterval(createHeart, 280);
-  </script>
+    heart.style.left = Math.random() * 100 + "vw";
+    heart.style.fontSize = (16 + Math.random() * 24) + "px";
+    heart.style.animationDuration = (3 + Math.random() * 3) + "s";
+
+    document.body.appendChild(heart);
+    setTimeout(() => heart.remove(), 6000);
+  }
+
+  setInterval(createHeart, 280);
+</script>
+
 
 </body>
 </html>
+
